@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Footer({ setPagina }) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
-  // A mesma função adicionada ao rodapé
   const handleScrollTo = (e, sectionId) => {
     e.preventDefault();
     setPagina('home');
@@ -16,10 +22,10 @@ export default function Footer({ setPagina }) {
   };
 
   return (
-    <footer style={{ backgroundColor: '#0F172A', color: '#F8FAFC', padding: '64px 48px 32px 48px' }}>
+    <footer style={{ backgroundColor: '#0F172A', color: '#F8FAFC', padding: isMobile ? '48px 20px 28px 20px' : '64px 48px 32px 48px' }}>
       <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '48px', marginBottom: '48px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))', gap: isMobile ? '36px' : '48px', marginBottom: '48px' }}>
           
           <div>
             <h3 style={{ fontSize: '24px', fontWeight: '900', color: '#FFFFFF', marginBottom: '16px', letterSpacing: '-0.5px' }}>
@@ -36,8 +42,6 @@ export default function Footer({ setPagina }) {
           <div>
             <h4 style={{ fontSize: '16px', fontWeight: '700', color: '#FFFFFF', marginBottom: '20px' }}>Links Rápidos</h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '14px', color: '#94A3B8', fontSize: '14px' }}>
-              
-              {/* Botões atualizados com a nova função de deslize */}
               <li>
                 <a href="#sobre" onClick={(e) => handleScrollTo(e, 'sobre')} style={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}>
                   Sobre Nós
@@ -48,7 +52,6 @@ export default function Footer({ setPagina }) {
                   Serviços Especializados
                 </a>
               </li>
-              
               <li>
                 <a onClick={(e) => { e.preventDefault(); setPagina('galeria'); window.scrollTo(0,0); }} style={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}>
                   Galeria de Fotos
